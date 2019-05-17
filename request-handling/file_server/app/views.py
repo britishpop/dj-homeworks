@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 
 from django.shortcuts import render
 from django.views.generic import TemplateView
@@ -11,23 +11,23 @@ class FileList(TemplateView):
     template_name = 'index.html'
     
     def get_context_data(self, date=None):
-        if date:
-            date_array = date.split('-')
-            parsed_date = datetime.datetime(int(date_array[0]), int(date_array[1]), int(date_array[2]))
-
         file_array = []
 
         for f in os.listdir(settings.FILES_PATH):
             f_path = os.path.join(settings.FILES_PATH, f)
-            ctime = datetime.datetime.fromtimestamp(os.stat(f_path).st_ctime)
-            mtime = datetime.datetime.fromtimestamp(os.stat(f_path).st_mtime)
-
+            ctime = datetime.fromtimestamp(os.stat(f_path).st_ctime)
+            mtime = datetime.fromtimestamp(os.stat(f_path).st_mtime)
+            
             file_info = {
                 'name': f,
                 'ctime': ctime,
                 'mtime': mtime
             }
             file_array.append(file_info)
+
+        if date:
+            parsed_date = datetime.strptime(date, '%Y-%m-%d').date()
+            file_array = list(filter(lambda x: x['ctime'].date() == parsed_date, file_array))
 
         # Реализуйте алгоритм подготавливающий контекстные данные для шаблона по примеру:
         return {
