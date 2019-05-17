@@ -25,21 +25,17 @@ class InflationView(TemplateView):
                         cell_dict['style'] = ''
                         prepared_data.append(cell_dict)
                         continue
-                        
+
+                    cell_dict['data'] = cell
                     if float(cell) <= 0: # если есть - обработаем его
-                        cell_dict['data'] = cell
                         cell_dict['style'] = 'negative-inflation'
                     elif 0 < float(cell) < 1:
-                        cell_dict['data'] = cell
                         cell_dict['style'] = ''
                     elif 1 <= float(cell) < 2:
-                        cell_dict['data'] = cell
                         cell_dict['style'] = 'positive-normal'
                     elif 2 <= float(cell) < 5:
-                        cell_dict['data'] = cell
                         cell_dict['style'] = 'positive-bad'
                     else:
-                        cell_dict['data'] = cell
                         cell_dict['style'] = 'positive-very-bad'                        
 
                     prepared_data.append(cell_dict) # добавляем данные ячейки
