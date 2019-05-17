@@ -1,0 +1,24 @@
+th {
+    font-weight: bold;
+}
+
+.negative-inflation {
+    background-color: #008000;
+}
+
+.positive-normal {
+    background-color: #ffe6e6;
+}
+
+.positive-bad {
+    background-color: #ff9999;
+}
+
+.positive-very-bad {
+    background-color: #ff1a1a;
+}
+
+th:last-child,
+td:last-child {
+    background-color: #808080;
+}
