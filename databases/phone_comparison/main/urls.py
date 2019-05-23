@@ -16,9 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from phones.views import show_catalog
+from phones.views import show_catalog, PhoneList
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', show_catalog)
+    path('', PhoneList.as_view(), name='comparison')
+    # path('', show_catalog)
 ]

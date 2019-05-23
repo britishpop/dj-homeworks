@@ -2,10 +2,19 @@
 {% load static %}
 
 {% block title %}Каталог{% endblock %}
+
 {% block content %}
     <div class="container">
         <div class="header">
             <h1>Сравнение телефонов</h1>
         </div>
+        <table>
+            <tr>
+                <th>Model</th>
+                {% for phone in phones %}
+                <th>{{ phone.phone_name }}</th>
+                {% endfor %}
+            </tr>
+        </table>
     </div>
 {% endblock %}
