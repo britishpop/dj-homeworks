@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load catalog_filters %}
 
 {% block title %}Каталог{% endblock %}
 
@@ -10,9 +11,81 @@
         </div>
         <table>
             <tr>
-                <th>Model</th>
+                <th>Модель</th>
                 {% for phone in phones %}
                 <th>{{ phone.phone_name }}</th>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>Тип</td>
+                {% for phone in phones %}
+                <td>{{ phone.phone_type }}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>Форм-фактор</td>
+                {% for phone in phones %}
+                <td>{{ phone.phone_form }}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>GSM 900/1800</td>
+                {% for phone in phones %}
+                <td>{{ phone.gsm_900_1800|bool_replace }}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>GSM 1900</td>
+                {% for phone in phones %}
+                <td>{{ phone.gsm_1900|bool_replace }}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>3G</td>
+                {% for phone in phones %}
+                <td>{{ phone.gsm_3g|bool_replace }}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>Тип SIM</td>
+                {% for phone in phones %}
+                <td>{{ phone.sim_type }}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>ОС</td>
+                {% for phone in phones %}
+                <td>{{ phone.OS }}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>Количество SIM</td>
+                {% for phone in phones %}
+                <td>{{ phone.sim_quantity|bool_replace|default:'Нет' }}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>FM-модуль</td>
+                {% for phone in phones %}
+                <td>{{ phone.radio|bool_replace|default:'Нет' }}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>Карта памяти</td>
+                {% for phone in phones %}
+                <td>{{ phone.mem_card|bool_replace|default:'Нет' }}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>Поддержка Animoji</td>
+                {% for phone in phones %}
+                <td>{{ phone.animoji|bool_replace|default:'Нет' }}</td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>Поддержка iMessage</td>
+                {% for phone in phones %}
+                <td>{{ phone.imessage|bool_replace|default:'Нет' }}</td>
                 {% endfor %}
             </tr>
         </table>

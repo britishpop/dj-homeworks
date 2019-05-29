@@ -14,22 +14,15 @@ class Phone(models.Model):
 
     def __str__(self):
         return self.phone_name
+
+    class Meta:
+        abstract = True
     
-class Chinaphone(models.Model):
-    phone_name = models.ForeignKey('Phone', on_delete=models.CASCADE,
-                                     verbose_name='Модель', max_length=50)
+class Chinaphone(Phone):
     mem_card = models.CharField(verbose_name='Карта памяти', max_length=10)
     radio = models.BooleanField(verbose_name='FM-модуль', max_length=10)
     sim_quantity = models.IntegerField(verbose_name='Количество SIM')
 
-    def __str__(self):
-        return self.phone_name.phone_name
-
-class Iphone(models.Model):
-    phone_name = models.ForeignKey('Phone', on_delete=models.CASCADE,
-                                     verbose_name='Модель', max_length=50)
+class Iphone(Phone):
     animoji = models.BooleanField(verbose_name='Поддержка Animoji', max_length=10)
     imessage = models.BooleanField(verbose_name='Поддержка iMessage', max_length=10)
-
-    def __str__(self):
-        return self.phone_name.phone_name

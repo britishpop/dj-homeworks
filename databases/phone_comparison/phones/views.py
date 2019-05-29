@@ -1,19 +1,20 @@
 from django.shortcuts import render
-from django.views.generic.list import ListView
-from phones.models import Phone
-
-class PhoneList(ListView):
-    model = Phone
-
-    template_name = 'catalog.html'
-    context_object_name = 'phones'
+from phones.models import Chinaphone, Iphone
 
 def show_catalog(request):
-    context = []
-    phones = Phone.objects.all()
+    phones = []
+
+    iphones = Iphone.objects.all()
+    chinaphones = Chinaphone.objects.all()
+
+    for phone in iphones:
+        phones.append(phone)
+    
+    for phone in chinaphones:
+        phones.append(phone)
 
     return render(
         request,
         'catalog.html',
-        context
+        {'phones': phones}
     )
