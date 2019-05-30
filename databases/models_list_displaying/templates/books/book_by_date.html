@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Книга в эту дату{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="header">
+            <h1><a href="/books">Каталог</a></h1>
+        </div>
+        <div class="row">
+        <div class="book col-md-4">
+            <h2>{{ books.0.name }}</h2>
+            <p>Автор: {{ books.0.author }}</p>
+            <p>Дата публикации: {{ books.0.pub_date }}</p>
+            <ul class="list-inline">
+                <li class="list-inline-item"><a href="/books/{{ previous }}">< {{ previous }}</a></li>
+                <li class="list-inline-item"><a href="/books/{{ next }}">{{ next }} ></a></li>
+            </ul>
+        </div>
+        </div>
+    </div>
+{% endblock %}
