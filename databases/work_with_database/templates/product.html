@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load template_filters %}
 
 {% block title %}Телефон{% endblock %}
 {% block content %}
@@ -8,7 +9,15 @@
             <h1>Телефон</h1>
         </div>
         <div class="content">
-
+            {% if status == '200' %}
+                <h2>{{ phone.name }}</h2>
+                <p class="price">Стоимость: {{ phone.price }}р.</p>
+                <img src={{ phone.image }} alt={{ phone.name }}>
+                <p>Дата выпуска: {{ phone.release_date }}</p>
+                <p>Наличие LTE: {{ phone.lte_exists|bool_replace }}</p>
+            {% else %}
+                <p>{{ phone }}</p>
+            {% endif %}
         </div>
     </div>
 {% endblock %}
