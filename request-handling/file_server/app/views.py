@@ -12,12 +12,20 @@ class FileList(TemplateView):
     
     def get_context_data(self, date=None):
         file_array = []
+        
+        try:
+            parsed_date = datetime.strptime(date, '%Y-%m-%d').date()
+        except TypeError:
+            pass
 
         for f in os.listdir(settings.FILES_PATH):
             f_path = os.path.join(settings.FILES_PATH, f)
             ctime = datetime.fromtimestamp(os.stat(f_path).st_ctime)
             mtime = datetime.fromtimestamp(os.stat(f_path).st_mtime)
             
+            if date and parsed_date != ctime.date():
+                continue
+
             file_info = {
                 'name': f,
                 'ctime': ctime,
@@ -25,11 +33,6 @@ class FileList(TemplateView):
             }
             file_array.append(file_info)
 
-        if date:
-            parsed_date = datetime.strptime(date, '%Y-%m-%d').date()
-            file_array = list(filter(lambda x: x['ctime'].date() == parsed_date, file_array))
-
-        # Реализуйте алгоритм подготавливающий контекстные данные для шаблона по примеру:
         return {
             'files': file_array,
             'date': parsed_date if date else '' # Этот параметр необязательный
