@@ -18,14 +18,6 @@ def bus_stations(request):
         reader = csv.DictReader(csvfile)
         reader_list = list(reader)
         paginator = Paginator(reader_list, 10)
-        bus_stations = []
-        for row in paginator.page(current_page):  
-            bus_stations.append(
-                {'Name': row['Name'],
-                 'Street': row['Street'],
-                 'District': row['District'],
-                 }
-                )
     
     if paginator.page(current_page).has_previous():
         previous_page = paginator.page(current_page).previous_page_number()
@@ -38,7 +30,7 @@ def bus_stations(request):
         next_page = current_page
 
     return render_to_response('index.html', context={
-        'bus_stations': bus_stations,
+        'bus_stations': paginator.page(current_page),
         'current_page': current_page,
         'prev_page_url': f'?page={previous_page}',
         'next_page_url': f'?page={next_page}',
