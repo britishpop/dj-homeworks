@@ -16,11 +16,17 @@
         <p>Можете добавить отзыв</p>
     {% endif %}
 
-    <form action="{% url 'product_detail' product.id %}" method="POST">
-        {% csrf_token %}
-        {{ form }}
-        <br>
-        <input type="submit" value="Отправить отзыв"/>
-    </form>
+    {% if not is_review_exist %}
+        <form action="{% url 'product_detail' product.id %}" method="POST">
+            {% csrf_token %}
+            {{ form }}
+            <br>
+            <input type="submit" value="Отправить отзыв"/>
+        </form>
+    {% endif %}
+
+    <br>
+    <a href="{% url 'main_page' %}"><button type="button" class="btn btn-secondary">Back</button></a>
+
 </div>
 {% endblock %}
