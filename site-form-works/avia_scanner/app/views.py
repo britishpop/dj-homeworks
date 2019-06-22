@@ -21,5 +21,17 @@ def ticket_page_view(request):
 
 def cities_lookup(request):
     """Ajax request предлагающий города для автоподстановки, возвращает JSON"""
-    results = []
+    search_term = request.GET['term']
+    cached_value = cache.get(search_term)
+    
+    if not cached_value:
+        response = City.objects.filter(name__icontains=search_term)
+            # SQLite не умеет делать case-insensitive сравнение для Unicode
+        results = []
+        for city in response:
+            results.append(city.name)
+            cache.set(search_term, results, 600)
+    else:
+        results = cached_value
+
     return JsonResponse(results, safe=False)
