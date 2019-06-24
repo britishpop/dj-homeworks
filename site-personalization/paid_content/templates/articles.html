@@ -1,17 +1,27 @@
 {% extends "base.html" %}
 {% load static %}
+{% load news_filters %}
 
 {% block title %}Журнал{% endblock %}
 
 {% block content %}
     <div class="container">
+        <a href="{% url 'subscription' %}"><h2>Подпишитесь</h2></a>
+        
         <div class="header">
             <h1>Список статей</h1>
         </div>
-        <div class="articles">
-            <h3>Статья 1</h3>
-            <h3>Статья 2</h3>
-            <h3>Статья 3</h3>
+        <div class="articles row col-md-12">
+
+            {% for article in articles %}
+                <div class="col-md-4">
+                    <a href="/articles/{{ article.pk }}/">
+                        <h3>{{ article.title }}</h3>
+                        <p>{{ article.text|format_selftext:"10" }}</p>
+                    </a>
+                </div>
+            {% endfor %}
+
         </div>
     </div>
 {% endblock %}
