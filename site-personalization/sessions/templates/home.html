@@ -8,5 +8,19 @@
         <div class="header">
             <h1>Игра "Угадай число"</h1>
         </div>
+        <div class="content">
+            {% if is_master %}
+                <h3>{{ number_message }}</h3>
+                <h5>{{ ending_message }}</h5>
+            {% endif %}
+            {% if form %}
+                <form action="{% url 'home' %}" method="post">
+                    {% csrf_token %}
+                    {{ form }}
+                    <button class="btn" type="submit">{% if gamestart %}Загадать{% else %}Проверить{% endif %}</button>
+                </form>
+            {% endif %}
+            <h5>{{ message }}</h5>
+        </div>
     </div>
 {% endblock %}

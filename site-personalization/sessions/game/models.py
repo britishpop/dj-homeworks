@@ -6,8 +6,12 @@ class Player(models.Model):
 
 
 class Game(models.Model):
-    pass
+    is_ended = models.BooleanField(default=False)
+    number = models.IntegerField()
 
 
 class PlayerGameInfo(models.Model):
-    pass
+    player = models.ForeignKey('Player', on_delete=models.CASCADE)
+    is_master = models.BooleanField(default=False)
+    game = models.ForeignKey('Game', on_delete=models.CASCADE)
+    counter = models.IntegerField(default=0)
