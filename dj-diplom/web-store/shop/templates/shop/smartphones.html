@@ -1,0 +1,23 @@
+{% extends "shop/base.html" %}
+
+{% block content %}
+
+<main role="main">
+
+  <div class="container">
+    <!-- Example row of columns -->
+
+    <h1>Смартфоны</h1>
+
+    <div class="row col-md-12">
+
+      {% with type='smartphone' %}
+      {% include "shop/include/item-display.html" %}
+      {% endwith %}
+      
+    </div> <!-- /container -->
+
+  </div>
+</main>
+
+{% endblock %}

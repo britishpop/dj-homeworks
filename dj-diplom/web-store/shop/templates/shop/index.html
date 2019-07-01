@@ -1,0 +1,52 @@
+{% extends "shop/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<main role="main">
+
+  <div class="jumbotron">
+    <div class="container">
+      <h1 class="display-4">Добро пожаловать на сайт просто магазина</h1>
+      <p>Лучшие мобилы только у нас:</p>
+    </div>
+  </div>
+
+
+  <div class="container mb-5">
+    <!-- Example row of columns -->
+    <div class="row">
+
+      {% with item_list=smartphones %}
+
+        {% include "shop/include/item-display.html" %}
+
+      {% endwith %}
+
+    </div>
+  </div> <!-- /container -->
+
+  <div class="jumbotron">
+    <div class="container">
+      <h1 class="display-4">Не знаете что надеть летом?</h1>
+      <p>Вот что мы можем предложить:</p>
+    </div>
+  </div>
+
+
+  <div class="container mb-5">
+    <!-- Example row of columns -->
+    <div class="row">
+
+      {% with item_list=clothes %}
+
+        {% include "shop/include/item-display.html" %}
+
+      {% endwith %}
+
+    </div>
+  </div> <!-- /container -->
+
+</main>
+
+{% endblock %}
