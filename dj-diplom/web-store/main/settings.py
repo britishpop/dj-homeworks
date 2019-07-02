@@ -30,6 +30,8 @@ ALLOWED_HOSTS = []
 LOGIN_REDIRECT_URL = 'shop:index'
 LOGOUT_REDIRECT_URL = 'shop:index'
 
+LOGIN_URL = 'shop:login'
+
 # Application definition
 
 INSTALLED_APPS = [

@@ -13,4 +13,5 @@ urlpatterns = [
     path('empty/', views.empty, name='empty'), # пустая категория
     path('item/<int:pk>/', views.show_item, name='item'), # посмотреть отдельный телефон
     path('cart/', views.cart, name='cart'), # корзина
+    path('order/', views.create_order, name='order'), # создание заказа
 ]

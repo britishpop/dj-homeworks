@@ -1,11 +1,14 @@
 from django.shortcuts import render, redirect
+from django.utils import timezone
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
 from django.views.generic.list import ListView
 from django.contrib.auth.views import LogoutView
-from .models import Item
+from .models import Item, Review, Order, Shipping
 from .forms import ShopAuthForm, ReviewForm
+
 
 # Create your views here.
 
@@ -20,8 +23,64 @@ def index(request):
 
     return render(request, 'shop/index.html', context)
 
+@login_required
 def cart(request):
-    return render(request, 'shop/cart.html')
+    if not request.session.session_key:
+        request.session.save()
+
+    if not request.session.get('cart_contents'):
+        request.session['cart_contents'] = {}
+
+    cart_contents = request.session['cart_contents']
+
+    if request.method == 'POST':
+        item_id = request.POST['item_id']
+        if not cart_contents.get(item_id):
+            cart_contents[item_id] = 1
+        else:
+            cart_contents[item_id] += 1
+        request.session.modified = True
+
+    object_list = []
+    cart_count = 0
+
+    for item in cart_contents:
+        item_object = Item.objects.get(pk=item)
+        quantity = cart_contents[item]
+        cart_count += int(quantity)
+        object_list.append([item_object, quantity])
+
+    context = {
+        'cart_contents': object_list,
+        'cart_count': cart_count,
+    }
+
+    return render(request, 'shop/cart.html', context)
+
+@login_required
+def create_order(request):
+    if request.method == "POST":
+        user = User.objects.get(pk=request.session['_auth_user_id'])
+        order = Order(pub_date=timezone.now(),user=user)
+        order.save()
+
+        cart_contents = request.session['cart_contents']
+        for item in cart_contents:
+            item_object = Item.objects.get(pk=item)
+            quantity = cart_contents[item]
+            shipping = Shipping(
+                order=order,
+                item=item_object,
+                quantity=quantity
+            )
+            shipping.save()
+        request.session['cart_contents'] = {}
+        request.session.modified = True
+
+        return render(request, 'shop/order_success.html', {'id': order.id})
+
+    else:
+        return redirect('shop:index')
 
 def empty(request):
     return render(request, 'shop/empty_section.html')
@@ -61,11 +120,15 @@ def shop_login(request):
 
 
 def show_item(request, pk):
-    phone = Item.objects.get(pk=pk) # TODO: prefetch related
+    phone = Item.objects.get(pk=pk)
     form = ReviewForm()
     
     if request.method == 'POST':
-        print('hey') # TODO: post review
+        form = ReviewForm(request.POST)
+        form.is_valid()
+        data = form.cleaned_data
+        review = Review(author=data['author'], text=data['text'], rating=int(data['rating']),item=phone)
+        review.save()
 
     context = {
         'object': phone,

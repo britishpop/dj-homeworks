@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -38,3 +39,27 @@ class Review(models.Model):
     
     def __str__(self):
         return '%s %s ...' % (self.author, self.text[:10])
+
+
+class Order(models.Model):
+    pub_date = models.DateTimeField('дата создания')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orders')
+    items = models.ManyToManyField(Item, related_name='orders', through='Shipping')
+
+    def items_count(self):
+        count = 0
+        for shipping in self.shipping_set.all():
+            count += shipping.quantity
+        return count
+
+    def __str__(self):
+        return 'Заказ %s пользователя %s' % (self.id, self.user)
+
+
+class Shipping(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    item = models.ForeignKey(Item, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField('количество', default=0)
+
+    def __str__(self):
+        return 'Продукт %s в заказе %s' % (self.item, self.order.id)
