@@ -13,7 +13,7 @@ from .forms import ShopAuthForm, ReviewForm
 # Create your views here.
 
 def index(request):
-    smartphones = Item.objects.filter(category__name__exact='smartphones')[:3]
+    smartphones = Item.objects.filter(category__name__exact='smartphones')[:3] # взять последние три объекта
     clothes = Item.objects.filter(category__name__exact='clothes')[:3]
 
     context = {
@@ -25,30 +25,30 @@ def index(request):
 
 @login_required
 def cart(request):
-    if not request.session.session_key:
+    if not request.session.session_key: # если нет сессии - создать ее
         request.session.save()
 
-    if not request.session.get('cart_contents'):
+    if not request.session.get('cart_contents'): # если нет корзины в сессии - создать ее
         request.session['cart_contents'] = {}
 
     cart_contents = request.session['cart_contents']
 
-    if request.method == 'POST':
-        item_id = request.POST['item_id']
-        if not cart_contents.get(item_id):
+    if request.method == 'POST': # запрос приходит после нажатия кнопки "Добавить в корзину"
+        item_id = request.POST['item_id'] # смотрим какой товар пользователь добавил через кнопку
+        if not cart_contents.get(item_id): # если этого товара еще не было в корзине - его кол-во станет 1
             cart_contents[item_id] = 1
         else:
-            cart_contents[item_id] += 1
-        request.session.modified = True
+            cart_contents[item_id] += 1 # если товар в корзине уже лежал - увеличить на 1
+        request.session.modified = True # сохранить корзину в сессии
 
-    object_list = []
-    cart_count = 0
+    object_list = [] # этот список товаров уйдет на рендер
+    cart_count = 0 # отдельная переменная для подсчета кол-ва предметов в корзине
 
     for item in cart_contents:
-        item_object = Item.objects.get(pk=item)
-        quantity = cart_contents[item]
-        cart_count += int(quantity)
-        object_list.append([item_object, quantity])
+        item_object = Item.objects.get(pk=item) # получим из базы объект товара
+        quantity = cart_contents[item] # получим количество из корзины
+        cart_count += int(quantity) # увеличим общий счетчик товаров в корзине
+        object_list.append([item_object, quantity]) # добавим товар и количество в список на рендер
 
     context = {
         'cart_contents': object_list,
@@ -60,22 +60,22 @@ def cart(request):
 @login_required
 def create_order(request):
     if request.method == "POST":
-        user = User.objects.get(pk=request.session['_auth_user_id'])
-        order = Order(pub_date=timezone.now(),user=user)
-        order.save()
+        user = User.objects.get(pk=request.session['_auth_user_id']) # получить текущего юзера
+        order = Order(pub_date=timezone.now(),user=user) # создать заказ
+        order.save() # сохранить заказ, чтобы получить доступ к ManyToMany
 
-        cart_contents = request.session['cart_contents']
+        cart_contents = request.session['cart_contents'] # получить корзину
         for item in cart_contents:
-            item_object = Item.objects.get(pk=item)
-            quantity = cart_contents[item]
+            item_object = Item.objects.get(pk=item) # конкретный товар из корзины
+            quantity = cart_contents[item] # количество товара
             shipping = Shipping(
                 order=order,
                 item=item_object,
                 quantity=quantity
             )
-            shipping.save()
-        request.session['cart_contents'] = {}
-        request.session.modified = True
+            shipping.save() # создать through связь и записать туда количество
+        request.session['cart_contents'] = {} # опустошить корзину после создания товара
+        request.session.modified = True # записать сессию
 
         return render(request, 'shop/order_success.html', {'id': order.id})
 
