@@ -7,6 +7,7 @@ class TableField(models.Model):
     position = models.IntegerField(verbose_name='порядковый номер')
     name = models.CharField(max_length=15, verbose_name='название поля')
     width = models.IntegerField(verbose_name='ширина поля')
+    table = models.ForeignKey('TableFile', on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = 'поле'
