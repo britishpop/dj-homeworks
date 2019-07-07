@@ -6,9 +6,9 @@ class Command(BaseCommand):
     help = 'Creates admin with no validation. Input <username> <password> <repeat password>'
     
     def add_arguments(self, parser):
-        parser.add_argument('admin_name', type=str, help='Username for admin')
-        parser.add_argument('admin_password', type=str, help='Password for admin')
-        parser.add_argument('admin_password_repeat', type=str, help='Password repeat')
+        parser.add_argument('admin_name', type=str, required=True, help='Username for admin')
+        parser.add_argument('admin_password', type=str, required=True, help='Password for admin')
+        parser.add_argument('admin_password_repeat', type=str, required=True, help='Password repeat')
 
     
     def handle(self, *args, **kwargs):
