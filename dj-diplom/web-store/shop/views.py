@@ -4,8 +4,9 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
-from django.views.generic.list import ListView
 from django.contrib.auth.views import LogoutView
+from django.views.generic.list import ListView
+from django.core.paginator import Paginator
 from .models import Item, Review, Order, Shipping
 from .forms import ShopAuthForm, ReviewForm
 
@@ -147,7 +148,16 @@ class SmartphonesListView(ListView):
     context_object_name = 'item_list'
 
     def get_queryset(self):
-        return Item.objects.filter(category__name__exact='smartphones')
+        try:
+            current_page = int(self.request.GET.get('page', 1))
+        except ValueError:
+            current_page = 1
+        
+        all_items = Item.objects.filter(category__name__exact='smartphones')
+        paginated_items = Paginator(all_items, 3)
+        queryset = paginated_items.get_page(current_page)
+        
+        return queryset
 
 
 class ClothesListView(ListView):
@@ -155,4 +165,13 @@ class ClothesListView(ListView):
     context_object_name = 'item_list'
 
     def get_queryset(self):
-        return Item.objects.filter(category__name__exact='clothes')
+        try:
+            current_page = int(self.request.GET.get('page', 3))
+        except ValueError:
+            current_page = 1
+        
+        all_items = Item.objects.filter(category__name__exact='clothes')
+        paginated_items = Paginator(all_items, 10)
+        queryset = paginated_items.get_page(current_page)
+        
+        return queryset

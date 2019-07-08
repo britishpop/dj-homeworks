@@ -11,13 +11,29 @@
 
     <div class="row col-md-12">
 
-      {% with type='smartphone' %}
       {% include "shop/include/item-display.html" %}
-      {% endwith %}
-      
-    </div> <!-- /container -->
 
-  </div>
+    </div> <!-- /container -->
+    
+    <br>
+
+    <div class="pagination">
+      <span class="step-links">
+          {% if item_list.has_previous %}
+              <a href="?page=1" class="btn btn-light">&laquo; первая</a>
+              <a href="?page={{ item_list.previous_page_number }}" class="btn btn-light">предыдущая</a>
+          {% endif %}
+  
+          <span class="current">
+              Page {{ item_list.number }} of {{ item_list.paginator.num_pages }}.
+          </span>
+  
+          {% if item_list.has_next %}
+              <a href="?page={{ item_list.next_page_number }}" class="btn btn-light">следующая</a>
+              <a href="?page={{ item_list.paginator.num_pages }}" class="btn btn-light">последняя &raquo;</a>
+          {% endif %}
+      </span>
+
 </main>
 
 {% endblock %}
