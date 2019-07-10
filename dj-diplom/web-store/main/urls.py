@@ -22,5 +22,6 @@ from django.http import HttpResponseRedirect
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('shop/', include('shop.urls')),
+    path('accounts/', include('allauth.urls')), # регистрация/аутентификация через allauth
     path('', lambda x : HttpResponseRedirect(reverse('shop:index'))),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

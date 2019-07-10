@@ -1,7 +1,14 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
+
+
+class ShopUser(AbstractUser):
+    
+    def __str__(self):
+        return self.email
+
 
 class Category(models.Model):
     name = models.CharField('категория', max_length=100)
@@ -12,6 +19,7 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+
 
 class Item(models.Model):
     name = models.CharField('название', max_length=100)
@@ -43,7 +51,7 @@ class Review(models.Model):
 
 class Order(models.Model):
     pub_date = models.DateTimeField('дата создания')
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orders')
+    user = models.ForeignKey(ShopUser, on_delete=models.CASCADE, related_name='orders')
     items = models.ManyToManyField(Item, related_name='orders', through='Shipping')
 
     def items_count(self):

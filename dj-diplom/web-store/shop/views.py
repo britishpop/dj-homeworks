@@ -86,38 +86,40 @@ def create_order(request):
 def empty(request):
     return render(request, 'shop/empty_section.html')
 
-def shop_signup(request):
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('shop:index')
-    else:
-        form = UserCreationForm()
+# вьюха для регистрации по юзернейму
+# def shop_signup(request):
+#     if request.method == 'POST':
+#         form = UserCreationForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('shop:index')
+#     else:
+#         form = UserCreationForm()
 
-    return render(
-        request,
-        'shop/signup.html',
-        {'form': form}
-    )
+#     return render(
+#         request,
+#         'shop/signup.html',
+#         {'form': form}
+#     )
 
 
-def shop_login(request):
-    form = ShopAuthForm()
+# вьюха для логина по юзернейму
+# def shop_login(request):
+#     form = ShopAuthForm()
 
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            return redirect('shop:index')
+#     if request.method == 'POST':
+#         username = request.POST['username']
+#         password = request.POST['password']
+#         user = authenticate(request, username=username, password=password)
+#         if user is not None:
+#             login(request, user)
+#             return redirect('shop:index')
 
-    return render(
-        request,
-        'shop/login.html',
-        {'form': form}
-    )
+#     return render(
+#         request,
+#         'shop/login.html',
+#         {'form': form}
+#     )
 
 
 def show_item(request, pk):

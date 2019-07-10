@@ -1,17 +1,33 @@
 from django import forms
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, UserChangeForm
 from django.forms.widgets import PasswordInput, TextInput, Textarea
+from .models import ShopUser
 
 
-class ShopAuthForm(AuthenticationForm):
-    username = forms.CharField(widget=TextInput(attrs={
-        'class': 'form-control',
-        'placeholder': 'Электронный адрес',}
-    ))
-    password = forms.CharField(widget=PasswordInput(attrs={
-        'class': 'form-control',
-        'placeholder':'Пароль',}
-    ))
+# форма использовалась для логина по юзернейму
+# class ShopAuthForm(AuthenticationForm): 
+#     username = forms.CharField(widget=TextInput(attrs={
+#         'class': 'form-control',
+#         'placeholder': 'Электронный адрес',}
+#     ))
+#     password = forms.CharField(widget=PasswordInput(attrs={
+#         'class': 'form-control',
+#         'placeholder':'Пароль',}
+#     ))
+
+
+class ShopUserCreationForm(UserCreationForm):
+
+    class Meta(UserCreationForm):
+        model = ShopUser
+        fields = ('username', 'email')
+
+    
+class ShopUserChangeForm(UserChangeForm):
+
+    class Meta:
+        model = ShopUser
+        fields = ('username', 'email')
 
 
 class ReviewForm(forms.Form):

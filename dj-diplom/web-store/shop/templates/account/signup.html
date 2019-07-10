@@ -4,19 +4,13 @@
 {% block content %}
 
 <form class="form-signup" method="post">
-  <input type="hidden" name="next" value="">
   <img class="mb-4" src="{% get_media_prefix %}logo.svg" alt="" width="72" height="72">
   <h1 class="h3 mb-3 font-weight-normal">Регистрация</h1>
 
   {% csrf_token %}
-  {% for field in form %}
-    <div class="form-control">
-    {{ field.label }} {{ field }}
-    {{ field.errors }}
-    </div>
-  {% endfor %}
+  {{ form.as_p }}
 
-  <button class="btn btn-lg btn-primary btn-block" type="submit" method="post">Зарегистрироваться</button>
+  <button class="btn btn-lg btn-primary btn-block" type="submit">Зарегистрироваться</button>
 </form>
 
 {% endblock %}
