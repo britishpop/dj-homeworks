@@ -1,13 +1,13 @@
 from django.shortcuts import render, redirect
 from django.utils import timezone
 from django.contrib.auth import authenticate, login
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LogoutView
 from django.views.generic.list import ListView
 from django.core.paginator import Paginator
-from .models import Item, Review, Order, Shipping
+from .models import Item, Review, Order, Shipping, ShopUser
 from .forms import ReviewForm #, ShopAuthForm
 
 
@@ -61,7 +61,7 @@ def cart(request):
 @login_required
 def create_order(request):
     if request.method == "POST":
-        user = User.objects.get(pk=request.session['_auth_user_id']) # получить текущего юзера
+        user = ShopUser.objects.get(pk=request.session['_auth_user_id']) # получить текущего юзера
         order = Order(pub_date=timezone.now(),user=user) # создать заказ
         order.save() # сохранить заказ, чтобы получить доступ к ManyToMany
 
