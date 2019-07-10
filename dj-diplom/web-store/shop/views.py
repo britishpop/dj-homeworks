@@ -8,7 +8,7 @@ from django.contrib.auth.views import LogoutView
 from django.views.generic.list import ListView
 from django.core.paginator import Paginator
 from .models import Item, Review, Order, Shipping
-from .forms import ShopAuthForm, ReviewForm
+from .forms import ReviewForm #, ShopAuthForm
 
 
 # Create your views here.
