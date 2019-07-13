@@ -13,6 +13,6 @@ urlpatterns = [
     path('order/', views.create_order, name='order'), # создание заказа
     path('logout/', views.ShopLogoutView.as_view(), name='logout'), # выход через свою вьюху
 
-    # path('signup/', views.shop_signup, name='signup'), # регистрация через свою вьюху по юзернейму
-    # path('login/', views.shop_login, name='login'), # аутентификация через свою вьюху по юзернейму
+    path('signup/', views.shop_signup, name='signup'), # регистрация через свою вьюху по имейлу
+    path('login/', views.shop_login, name='login'), # аутентификация через свою вьюху по имейлу
 ]

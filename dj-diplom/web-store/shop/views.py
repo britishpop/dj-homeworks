@@ -1,14 +1,12 @@
 from django.shortcuts import render, redirect
 from django.utils import timezone
 from django.contrib.auth import authenticate, login
-# from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LogoutView
 from django.views.generic.list import ListView
 from django.core.paginator import Paginator
 from .models import Item, Review, Order, Shipping, ShopUser
-from .forms import ReviewForm #, ShopAuthForm
+from .forms import ReviewForm, ShopAuthForm, ShopUserCreationForm
 
 
 # Create your views here.
@@ -86,40 +84,39 @@ def create_order(request):
 def empty(request):
     return render(request, 'shop/empty_section.html')
 
-# вьюха для регистрации по юзернейму
-# def shop_signup(request):
-#     if request.method == 'POST':
-#         form = UserCreationForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             return redirect('shop:index')
-#     else:
-#         form = UserCreationForm()
 
-#     return render(
-#         request,
-#         'shop/signup.html',
-#         {'form': form}
-#     )
+def shop_signup(request):
+    if request.method == 'POST':
+        form = ShopUserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('shop:index')
+    else:
+        form = ShopUserCreationForm()
+
+    return render(
+        request,
+        'account/signup.html',
+        {'form': form}
+    )
 
 
-# вьюха для логина по юзернейму
-# def shop_login(request):
-#     form = ShopAuthForm()
+def shop_login(request):
+    form = ShopAuthForm()
 
-#     if request.method == 'POST':
-#         username = request.POST['username']
-#         password = request.POST['password']
-#         user = authenticate(request, username=username, password=password)
-#         if user is not None:
-#             login(request, user)
-#             return redirect('shop:index')
+    if request.method == 'POST':
+        email = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, email=email, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('shop:index')
 
-#     return render(
-#         request,
-#         'shop/login.html',
-#         {'form': form}
-#     )
+    return render(
+        request,
+        'account/login.html',
+        {'form': form}
+    )
 
 
 def show_item(request, pk):
