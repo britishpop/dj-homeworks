@@ -35,3 +35,14 @@
 * База данных сохранена через fixtures в файл db.json
 * Создан requirements.txt
 
+
+## Запуск
+
+Установить зависимости:
+`pip install -r requirements.txt`
+
+Загрузить фикстуры (необязательно):
+`python manage.py loaddata db.json`
+
+Выполнить команду:
+`python manage.py runserver`
