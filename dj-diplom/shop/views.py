@@ -89,7 +89,12 @@ def shop_signup(request):
     if request.method == 'POST':
         form = ShopUserCreationForm(request.POST)
         if form.is_valid():
-            form.save()
+            new_user = form.save(False)
+            new_user.username = new_user.email
+            new_user.save()
+            user = authenticate(email=form.cleaned_data['email'], password=form.cleaned_data['password1'])
+            if user is not None:
+                login(request, user)
             return redirect('shop:index')
     else:
         form = ShopUserCreationForm()
