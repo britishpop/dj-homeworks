@@ -115,6 +115,8 @@ def shop_login(request):
         user = authenticate(request, email=email, password=password)
         if user is not None:
             login(request, user)
+            if request.GET.get('next') and 'cart' in request.GET.get('next'):
+                return redirect('shop:cart')
             return redirect('shop:index')
 
     return render(
